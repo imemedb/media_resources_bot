@@ -2,6 +2,7 @@ import json
 import logging
 
 import requests
+from gensim.summarization import summarize
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
 
@@ -125,10 +126,17 @@ def summarize_group(update: Update, context: CallbackContext):
         for post in posts:
             text = post["text"]
             post_url = generate_post_link(abs(post["from_id"]), post["id"])
+            try:
+                headline = summarize(text).split(".")[0].lower()
+            except Exception:
+                headline = ""
 
             keywords = __get_keywords(text, algorithm, n_keywords)
 
-            context.bot.send_message(chat_id=update.message.chat_id, text=f"{keywords}\n{post_url}")
+            text = (
+                f"Заголовок: {headline}\n" if headline else headline
+            ) + f"{keywords}\n{post_url}"
+            context.bot.send_message(chat_id=update.message.chat_id, text=text)
 
 
 start_handler = CommandHandler("start", start)
