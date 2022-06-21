@@ -16,7 +16,7 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 jmespath==0.9.4
 MarkupSafe==1.1.1
-numpy==1.16.4
+numpy==1.22.0
 pycparser==2.19
 python-dateutil==2.8.0
 python-telegram-bot==12.0.0b1
